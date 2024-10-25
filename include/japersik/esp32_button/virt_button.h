@@ -15,36 +15,34 @@ typedef uint8_t ButtonEvent;
 #define BUTTON_RELEASE_HOLD (1 << 5) // Button is released after holding - event
 #define BUTTON_STEP (1 << 6)         // Hold step event - state
 
-typedef void (*EventCallbackFunction)(ButtonEvent);
-typedef void (*MulticlickCallbackFunction)(uint8_t);
-typedef void (*HoldCallbackFunction)(uint32_t hold_duration_ms);
+typedef void (*EventCallbackFunction)(uint8_t id, ButtonEvent);
+typedef void (*MulticlickCallbackFunction)(uint8_t id, uint8_t count);
+typedef void (*HoldCallbackFunction)(uint8_t id, uint32_t hold_duration_ms);
 
 typedef struct {
   EventCallbackFunction event_callback;
   MulticlickCallbackFunction multiclick_callback;
   HoldCallbackFunction hold_callback;
 
-  uint32_t last_event_time_ms;
   uint32_t last_step_time_ms;
   uint32_t press_start_time_ms;
 
-  uint32_t bounce_duration_ms;
   uint32_t hold_duration_ms;
   uint32_t step_duration_ms;
   uint32_t multiclick_duration_ms;
+
   uint8_t multiclick_counter;
   ButtonEvent state;
+  uint8_t id;
   bool inverse;
 } VirtButton;
 
-VirtButton *button_new();
+VirtButton *button_new(uint8_t id);
 void button_free(VirtButton *);
 void button_set_event_callback(VirtButton *, EventCallbackFunction);
 void button_set_hold_callback(VirtButton *, HoldCallbackFunction);
 void button_set_multiclick_callback(VirtButton *, MulticlickCallbackFunction);
-void button_set_bounce_duration(VirtButton *, uint32_t duration_ms);
 void button_set_step_duration(VirtButton *, uint32_t duration_ms);
-void button_set_bounce_timeut(VirtButton *, uint32_t duration_ms);
 void button_set_multiclick_timeut(VirtButton *self, uint32_t duration_ms);
 void button_set_inverse(VirtButton *, bool inverse);
 
