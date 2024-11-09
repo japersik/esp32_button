@@ -1,6 +1,6 @@
 name: "esp32_button"
 license: "MIT"
-version: "1.0.2"
+version: "1.0.3"
 repository: https://github.com/japersik/esp32_button
 description: "A component to simplify interaction with buttons."
 dependencies:
