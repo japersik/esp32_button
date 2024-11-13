@@ -7,13 +7,13 @@
 typedef uint8_t ButtonEvent;
 
 // Possible button states
-#define BUTTON_PRESS (1 << 0)         // Button was pressed - event
-#define BUTTON_PRESSING (1 << 1)      // Button is pressed now - state
-#define BUTTON_HOLD (1 << 2)          // Button holding has started - event
-#define BUTTON_HOLDING (1 << 3)       // Button is held down now - state
-#define BUTTON_RELEASE_CLICK (1 << 4) // Button is released - event
-#define BUTTON_RELEASE_HOLD (1 << 5) // Button is released after holding - event
-#define BUTTON_STEP (1 << 6)         // Hold step event - state
+#define BUTTON_PRESS (1 << 0)	       // Button was pressed - event
+#define BUTTON_PRESSING (1 << 1)       // Button is pressed now - state
+#define BUTTON_HOLD (1 << 2)	       // Button holding has started - event
+#define BUTTON_HOLDING (1 << 3)	       // Button is held down now - state
+#define BUTTON_RELEASE_CLICK (1 << 4)  // Button is released - event
+#define BUTTON_RELEASE_HOLD (1 << 5)   // Button is released after holding - event
+#define BUTTON_STEP (1 << 6)	       // Hold step event - state
 
 typedef void (*EventCallbackFunction)(uint8_t id, ButtonEvent);
 typedef void (*MulticlickCallbackFunction)(uint8_t id, uint8_t count);
@@ -48,5 +48,5 @@ void button_set_inverse(VirtButton *, bool inverse);
 
 void button_click_on_time(VirtButton *, bool pressed, uint32_t time_ms);
 ButtonEvent button_get_state(const VirtButton *);
-
-#endif // !_JAPERSIK_ESP32_BUTTON_VIRT_BUTTON_H
+bool button_is_processing(const VirtButton *);
+#endif	// !_JAPERSIK_ESP32_BUTTON_VIRT_BUTTON_H

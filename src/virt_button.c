@@ -1,12 +1,15 @@
 
 #include "japersik/esp32_button/virt_button.h"
 
+#include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-
 VirtButton *button_new(uint8_t id) {
   VirtButton *self = (VirtButton *)malloc(sizeof(VirtButton));
+  if (self == NULL) {
+    return NULL;
+  }
   self->state = 0;
   self->id = id;
   self->event_callback = NULL;
@@ -30,6 +33,9 @@ void button_set_multiclick_timeut(VirtButton *self, uint32_t duration_ms) {
   self->multiclick_duration_ms = duration_ms;
 }
 void button_set_inverse(VirtButton *self, bool inverse) { self->inverse = inverse; }
+bool button_is_processing(const VirtButton *self) {
+  return self->state & BUTTON_PRESSING || self->multiclick_counter > 0;
+}
 
 static void process_click_on_time(VirtButton *self, bool pressed, uint32_t event_time_ms) {
   pressed ^= self->inverse;
