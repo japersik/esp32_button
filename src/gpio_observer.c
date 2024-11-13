@@ -4,14 +4,12 @@
 #include <stdlib.h>
 
 #include "driver/gpio.h"
-#include "esp_attr.h"
 #include "esp_timer.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/queue.h"
 #include "freertos/task.h"
 #include "hal/gpio_types.h"
 #include "japersik/esp32_button/virt_button.h"
-#include "portmacro.h"
 
 void monitor_gpio_task(void *params);
 
