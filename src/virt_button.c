@@ -43,7 +43,7 @@ static void process_click_on_time(VirtButton *self, bool pressed, uint32_t event
   state &= ~(BUTTON_PRESS | BUTTON_HOLD | BUTTON_RELEASE_CLICK | BUTTON_RELEASE_HOLD | BUTTON_STEP);
   // send multiclick callback
   if (event_time_ms - self->press_start_time_ms >= self->multiclick_duration_ms) {
-    if (self->multiclick_counter > 1) {
+    if (self->multiclick_counter > 1 && self->multiclick_callback != NULL) {
       self->multiclick_callback(self->id, self->multiclick_counter);
     }
     self->multiclick_counter = 0;
