@@ -8,20 +8,29 @@
 #include "japersik/esp32_button/gpio_observer.h"
 #include "japersik/esp32_button/virt_button.h"
 
-#define INPUT_PIN_1 22	// connect the button to the 23 gpio pin and ground
-#define INPUT_PIN_2 23	// connect the button to the 22 gpio pin and +3.3v
+#define INPUT_PIN_1 21	// connect the button to the 21 gpio pin and ground
+#define INPUT_PIN_2 19	// connect the button to the 19 gpio pin and +3.3v
 
 void app_main() {
-  VirtButton *button1 = button_new(1);
-  button_set_event_callback(button1, print_state_callback);
-  button_set_hold_callback(button1, hold_callback);
-  button_set_multiclick_callback(button1, multi_callback);
+  char *message1 = "1";
+  VirtButtonConfig config = {
+      .inverse = true,
+      .event_callback = print_state_callback,
+      .event_callback_params = message1,
+      .multiclick_callback = multi_callback,
+      .multiclick_callback_params = message1,
+      .hold_release_callback = hold_callback,
+      .hold_release_callback_params = message1,
+
+  };
+  VirtButton *button1 = button_new(&config);
   button_set_inverse(button1, true);
 
-  VirtButton *button2 = button_new(2);
-  button_set_event_callback(button2, print_state_callback);
-  button_set_hold_callback(button2, hold_callback);
-  button_set_multiclick_callback(button2, multi_callback);
+  char *message2 = "2";
+  VirtButton *button2 = button_new(NULL);
+  button_set_event_callback(button2, print_state_callback, message2);
+  button_set_hold_release_callback(button2, hold_callback, message2);
+  button_set_multiclick_callback(button2, multi_callback, message2);
   button_set_inverse(button2, false);
 
   ButtonObserver *observer = button_observer_new();

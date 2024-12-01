@@ -10,19 +10,7 @@
 #include "virt_button.h"
 
 #define MAX_BUTTONS GPIO_NUM_MAX
-struct buttonInfo;
-
-typedef struct ButtonObserver {
-  QueueHandle_t interruptQueue;
-  struct buttonInfo *activeButtons[MAX_BUTTONS];
-  uint8_t activeButtonsNum;
-} ButtonObserver;
-
-typedef struct buttonInfo {
-  VirtButton *button;
-  struct ButtonObserver *observer;
-  gpio_num_t pin;
-} buttonInfo;
+typedef struct ButtonObserver ButtonObserver;
 
 ButtonObserver *button_observer_new();
 void button_observer_free(ButtonObserver *observer);

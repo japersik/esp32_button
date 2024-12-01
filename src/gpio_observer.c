@@ -11,6 +11,20 @@
 #include "hal/gpio_types.h"
 #include "japersik/esp32_button/virt_button.h"
 
+struct buttonInfo;
+
+struct ButtonObserver {
+  QueueHandle_t interruptQueue;
+  struct buttonInfo *activeButtons[MAX_BUTTONS];
+  uint8_t activeButtonsNum;
+};
+
+typedef struct buttonInfo {
+  VirtButton *button;
+  struct ButtonObserver *observer;
+  gpio_num_t pin;
+} buttonInfo;
+
 void monitor_gpio_task(void *params);
 
 ButtonObserver *button_observer_new() {
@@ -47,7 +61,7 @@ void button_observer_add_button(ButtonObserver *observer, VirtButton *button, gp
   io_conf.mode = GPIO_MODE_INPUT;
   io_conf.pin_bit_mask = 1 << pin;
 
-  if (button->inverse) {
+  if (button_get_inverse(button)) {
     io_conf.intr_type = GPIO_INTR_NEGEDGE;
     io_conf.pull_up_en = GPIO_PULLUP_ENABLE;
   } else {
@@ -73,7 +87,8 @@ void monitor_gpio_task(void *params) {
   while (true) {
     // receive and start monitoring
     if (xQueueReceive(observer->interruptQueue, &data_from_isr, waitTime)) {
-      button_click_on_time(data_from_isr->button, !data_from_isr->button->inverse, esp_timer_get_time() / 1000);
+      button_click_on_time(data_from_isr->button, !button_get_inverse(data_from_isr->button),
+			   esp_timer_get_time() / 1000);
       observer->activeButtons[observer->activeButtonsNum] = data_from_isr;
       observer->activeButtonsNum++;
     }

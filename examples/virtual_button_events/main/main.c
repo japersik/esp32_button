@@ -14,19 +14,22 @@ void app_main() {
   gpio_set_direction(INPUT_PIN_1, GPIO_MODE_INPUT);
   gpio_pulldown_dis(INPUT_PIN_1);
   gpio_pullup_en(INPUT_PIN_1);
-  VirtButton *button1 = button_new(1);
-  button_set_event_callback(button1, print_state_callback);
-  button_set_hold_callback(button1, hold_callback);
-  button_set_multiclick_callback(button1, multi_callback);
+  char *message1 = "1";
+  VirtButton *button1 = button_new(NULL);
+  button_set_event_callback(button1, print_state_callback, message1);
+  button_set_hold_release_callback(button1, hold_callback, message1);
+  button_set_multiclick_callback(button1, multi_callback, message1);
   button_set_inverse(button1, true);
 
   gpio_set_direction(INPUT_PIN_2, GPIO_MODE_INPUT);
   gpio_pullup_dis(INPUT_PIN_2);
   gpio_pulldown_en(INPUT_PIN_2);
-  VirtButton *button2 = button_new(2);
-  button_set_event_callback(button2, print_state_callback);
-  button_set_hold_callback(button2, hold_callback);
-  button_set_multiclick_callback(button2, multi_callback);
+
+  char *message2 = "2";
+  VirtButton *button2 = button_new(NULL);
+  button_set_event_callback(button2, print_state_callback, message2);
+  button_set_hold_release_callback(button2, hold_callback, message2);
+  button_set_multiclick_callback(button2, multi_callback, message2);
   button_set_inverse(button2, false);
   for (;;) {
     int level1 = gpio_get_level(INPUT_PIN_1);
